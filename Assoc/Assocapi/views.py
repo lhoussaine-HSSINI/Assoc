@@ -53,6 +53,7 @@ class GDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = GuestSerializer
 
 class AssociationAdminSignup(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class=AssociationAdminSignupSerializer
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
@@ -65,6 +66,7 @@ class AssociationAdminSignup(generics.GenericAPIView):
         })
 
 class AssociationMemberSignup(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class=AssociationMemberSignupSerializer
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
@@ -76,6 +78,7 @@ class AssociationMemberSignup(generics.GenericAPIView):
             "message":"account member created successfully"
         })
 class OrganizationAdminSignup(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class=OrganizationAdminSignupSerializer
     def post(self, request, *args, **kwargs):
         serializer=self.get_serializer(data=request.data)
@@ -101,9 +104,11 @@ class CustomAuthToken(ObtainAuthToken):
                 'is_admin_assoc':user.is_admin_assoc,
                 'is_member_assoc': user.is_member_assoc,
                 'is_admin_orga': user.is_admin_orga,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
             })
         else:
-            return Response({'mesage':'Invalid username or email '})
+            return Response({'message':'Invalid username or email ', 'is_authenticated':False})
 
     def get(self, request: Request):
         content = {"user": str(request.user), "auth": str(request.auth)}
