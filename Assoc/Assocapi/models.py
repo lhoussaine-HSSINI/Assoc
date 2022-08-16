@@ -17,8 +17,10 @@ class User(AbstractUser):
     is_admin_assoc = models.BooleanField(default=False)
     is_member_assoc = models.BooleanField(default=False)
     is_admin_orga = models.BooleanField(default=False)
+    is_accepted = models.BooleanField(default=False)
     cin = models.CharField(max_length=20)
     phone_number = models.CharField(max_length=20)
+
 
     def __str__(self):
         return self.username
@@ -68,7 +70,7 @@ class   Association(models.Model):
         img.thumbnail(size)
 
         thumb_io = BytesIO()
-        img.save(thumb_io, 'JPEG', quality=85)
+        img.save(thumb_io, 'PNG', quality=85)
 
         logoassociation = File(thumb_io, name=image.name)
 

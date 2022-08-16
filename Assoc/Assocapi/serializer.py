@@ -9,8 +9,7 @@ class AssociationSerializer(serializers.ModelSerializer):
     class Meta:
         model=Association
         fields=('id','user', 'nameassociation', 'emailassociation', 'phoneassociation','type',
-                'addressassociation', 'cityassociation', 'Objectivesassociation','informationsassociation',
-                'get_image', 'get_logoassociation', 'image', 'logoassociation')
+                'addressassociation', 'cityassociation', 'Objectivesassociation','informationsassociation','get_logoassociation', 'image')
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,10 +92,12 @@ class AssociationMemberSignupSerializer(serializers.ModelSerializer):
 
         if password != password2:
             raise serializers.ValidationError({"error": "password do not match"})
-        user = User.objects.create(username=username,email=email , password=password,
+        user = User.objects.create(username=username,email=email ,
                             birth_date=birth_date ,address=address , city=city,
                             cin=cin , phone_number=phone_number, first_name=first_name,
                             last_name=last_name ,is_member_assoc = True , is_active=True)
+        user.set_password(password)
+        user.save()
         return user
 
 class OrganizationAdminSignupSerializer(serializers.ModelSerializer):
@@ -124,9 +125,11 @@ class OrganizationAdminSignupSerializer(serializers.ModelSerializer):
 
         if password != password2:
             raise serializers.ValidationError({"error": "password do not match"})
-        user = User.objects.create(username=username,email=email , password=password,
+        user = User.objects.create(username=username,email=email ,
                             birth_date=birth_date ,address=address , city=city,
                             cin=cin , phone_number=phone_number, first_name=first_name,
                             last_name=last_name ,is_admin_orga = True , is_active=True)
+        user.set_password(password)
+        user.save()
         return user
 
